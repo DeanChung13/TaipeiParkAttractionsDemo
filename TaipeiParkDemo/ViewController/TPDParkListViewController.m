@@ -49,9 +49,8 @@ CGFloat const kTableViewTopInset = 140.0;
 - (void)loadParkDataWithOffset:(NSUInteger)offset {
   self.isLoading = YES;
   [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-  [TPDAPIManager requestTaipeiParkListWithOffset:0
+  [TPDAPIManager requestTaipeiParkListWithOffset:offset
                                       completion:^(NSArray *jsonArray, NSError *error) {
-                                        NSLog(@"%@", jsonArray);
                                         [self.parkList addObjectsFromArray:jsonArray];
                                         [self.mainTableView reloadData];
                                         self.isLoading = NO;
