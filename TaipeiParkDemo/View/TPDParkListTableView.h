@@ -1,5 +1,5 @@
 //
-//  RootViewController.h
+//  TPDParkListTableView.h
 //  TaipeiParkDemo
 //
 //  Created by DeanChung on 2018/4/9.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RootViewController : UIViewController
+@interface TPDParkListTableView : UITableView
 
 @end

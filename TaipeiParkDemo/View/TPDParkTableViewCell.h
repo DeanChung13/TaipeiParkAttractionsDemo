@@ -1,5 +1,5 @@
 //
-//  AppDelegate.h
+//  TPDParkTableViewCell.h
 //  TaipeiParkDemo
 //
 //  Created by DeanChung on 2018/4/9.
@@ -8,10 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
-
-@property (strong, nonatomic) UIWindow *window;
-
-
+@interface TPDParkTableViewCell : UITableViewCell
++ (NSString *)identifier;
+- (void)setupData:(NSNumber *)data;
 @end
-
