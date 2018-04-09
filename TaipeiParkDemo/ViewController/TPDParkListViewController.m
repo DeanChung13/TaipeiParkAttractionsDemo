@@ -16,6 +16,8 @@
 @interface TPDParkListViewController() <UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, weak) IBOutlet TPDParkListTableView *mainTableView;
 @property (nonatomic, strong) NSMutableArray *parkList;
+@property (nonatomic, assign) BOOL lastDataReached;
+@property (nonatomic, assign) BOOL isLoading;
 @end
 
 @implementation TPDParkListViewController
@@ -42,14 +44,28 @@
   self.mainTableView.contentInset = UIEdgeInsetsMake(140.0, 0, 0, 0);
 }
 
-- (void)loadParkData {
+- (void)loadParkDataWithOffset:(NSUInteger)offset {
+  self.isLoading = YES;
+  [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
   [TPDAPIManager requestTaipeiParkListWithOffset:0
                                       completion:^(NSArray *jsonArray, NSError *error) {
                                         NSLog(@"%@", jsonArray);
                                         [self.parkList addObjectsFromArray:jsonArray];
                                         [self.mainTableView reloadData];
+                                        self.isLoading = NO;
+                                        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
   }];
 }
+
+- (void)loadParkData {
+  [self loadParkDataWithOffset:0];
+}
+
+- (void)loadNextThirtyParks {
+  [self loadParkDataWithOffset:self.parkList.count+1];
+}
+
+
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
   return self.parkList.count;
@@ -59,6 +75,11 @@
                                                                forIndexPath:indexPath];
   TPDParkTableViewCellViewModel *viewModel = [[TPDParkTableViewCellViewModel alloc] initWithRawData:self.parkList[indexPath.row]];
   [cell setupWithViewModel:viewModel];
+
+  BOOL isLastData = ( indexPath.row == (self.parkList.count - 1) );
+  if ( isLastData && !self.isLoading ) {
+    [self loadNextThirtyParks];
+  }
   return cell;
 }
 

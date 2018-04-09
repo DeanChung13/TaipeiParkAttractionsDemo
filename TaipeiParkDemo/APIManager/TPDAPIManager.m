@@ -8,14 +8,18 @@
 
 #import "TPDAPIManager.h"
 
+NSUInteger const dataCount = 30;
+
 @implementation TPDAPIManager
 
 + (void)requestTaipeiParkListWithOffset:(NSUInteger)offset
                              completion:(TaipeiParkListRequestCompletion)completion {
-  NSString *urlString = @"http://data.taipei/opendata/datalist/apiAccess?scope=resourceAquire&rid=bf073841-c734-49bf-a97f-3757a6013812&limit=30";
+  NSString *urlString = [NSString stringWithFormat:
+                         @"http://data.taipei/opendata/datalist/apiAccess?scope=resourceAquire&rid=bf073841-c734-49bf-a97f-3757a6013812&limit=%@", @(dataCount)];
   urlString = [urlString stringByAppendingFormat:@"&offset=%@", @(offset)];
 
   NSURL *url = [NSURL URLWithString:urlString];
+
   NSURLSessionTask *sessionTask = [[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
     if ( error ) {
       NSLog(@"%@", error);
