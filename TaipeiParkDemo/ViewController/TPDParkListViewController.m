@@ -13,6 +13,8 @@
 #import "TPDAPIManager.h"
 #import "TPDParkTableViewCellViewModel.h"
 
+CGFloat const kTableViewTopInset = 140.0;
+
 @interface TPDParkListViewController() <UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, weak) IBOutlet TPDParkListTableView *mainTableView;
 @property (nonatomic, strong) NSMutableArray *parkList;
@@ -36,12 +38,12 @@
   self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
   self.title = @"我是 Navigation bar";
   self.navigationController.navigationBar.titleTextAttributes =
-  @{ NSForegroundColorAttributeName: [UIColor whiteColor] };
+    @{ NSForegroundColorAttributeName: [UIColor whiteColor] };
   self.navigationController.navigationBar.shadowImage = [UIImage new];
 }
 
 - (void)setupTableView {
-  self.mainTableView.contentInset = UIEdgeInsetsMake(140.0, 0, 0, 0);
+  self.mainTableView.contentInset = UIEdgeInsetsMake(kTableViewTopInset, 0, 0, 0);
 }
 
 - (void)loadParkDataWithOffset:(NSUInteger)offset {
