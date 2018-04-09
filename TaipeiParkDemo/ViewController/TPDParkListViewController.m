@@ -10,10 +10,12 @@
 #import "TPDParkListTableView.h"
 #import "TPDParkTableViewCell.h"
 #import "TPDConstants.h"
+#import "TPDAPIManager.h"
+#import "TPDParkTableViewCellViewModel.h"
 
 @interface TPDParkListViewController() <UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, weak) IBOutlet TPDParkListTableView *mainTableView;
-@property (nonatomic, strong) NSArray *demoData;
+@property (nonatomic, strong) NSMutableArray *parkList;
 @end
 
 @implementation TPDParkListViewController
@@ -23,6 +25,7 @@
   [super viewDidLoad];
   [self setupNavigationBar];
   [self setupTableView];
+  [self loadParkData];
 }
 
 #pragma mark - Private methods
@@ -39,28 +42,32 @@
   self.mainTableView.contentInset = UIEdgeInsetsMake(140.0, 0, 0, 0);
 }
 
+- (void)loadParkData {
+  [TPDAPIManager requestTaipeiParkListWithOffset:0
+                                      completion:^(NSArray *jsonArray, NSError *error) {
+                                        NSLog(@"%@", jsonArray);
+                                        [self.parkList addObjectsFromArray:jsonArray];
+                                        [self.mainTableView reloadData];
+  }];
+}
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-  return self.demoData.count;
+  return self.parkList.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   TPDParkTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:TPDParkTableViewCell.identifier
                                                                forIndexPath:indexPath];
-  [cell setupData:self.demoData[indexPath.row]];
+  TPDParkTableViewCellViewModel *viewModel = [[TPDParkTableViewCellViewModel alloc] initWithRawData:self.parkList[indexPath.row]];
+  [cell setupWithViewModel:viewModel];
   return cell;
 }
 
 #pragma mark - Setters & Getters
-- (NSArray *)demoData {
-  if ( !_demoData ) {
-    NSMutableArray *tempArray = [NSMutableArray arrayWithCapacity:100];
-    for (NSInteger index = 0; index < 100; index++) {
-      [tempArray addObject:@(index)];
-    }
-    _demoData = [tempArray copy];
+- (NSMutableArray *)parkList {
+  if ( !_parkList ) {
+    _parkList = [NSMutableArray array];
   }
-  return _demoData;
+  return _parkList;
 }
-
 
 @end

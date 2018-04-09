@@ -7,6 +7,8 @@
 //
 
 #import "TPDParkTableViewCell.h"
+#import "TPDParkTableViewCellViewModel.h"
+
 NSString * const TPDParkTableViewCellIdentifier = @"TPDParkTableViewCellIdentifier";
 
 @interface TPDParkTableViewCell ()
@@ -24,8 +26,9 @@ NSString * const TPDParkTableViewCellIdentifier = @"TPDParkTableViewCellIdentifi
     [super awakeFromNib];
 }
 
-- (void)setupData:(NSNumber *)data {
-  self.parkNameLabel.text = [data stringValue];
+- (void)setupWithViewModel:(TPDParkTableViewCellViewModel *)viewModel {
+  self.parkNameLabel.text = viewModel.parkName;
+  self.parkIntroductionLabel.text = viewModel.parkIntroduction;
 }
 
 

@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+@class TPDParkTableViewCellViewModel;
 
 @interface TPDParkTableViewCell : UITableViewCell
 + (NSString *)identifier;
-- (void)setupData:(NSNumber *)data;
+- (void)setupWithViewModel:(TPDParkTableViewCellViewModel *)viewModel;
 @end
